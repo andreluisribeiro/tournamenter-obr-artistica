@@ -1,7 +1,6 @@
 var app = angular.module('app.scorers', [])
 
-.factory('ArtisticScorer2024Regional', function (){
-  // TODO 
+.factory('RescueScorer2024Regional', function (){
   var model = {
     gaps: {
 
