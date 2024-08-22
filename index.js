@@ -63,6 +63,7 @@ module.exports = {
 
   initialize: function(app){
     // Get 'Table' model from App
+    console.log(app.config.root)
     var tournamenterRoot = app.config.root;
     var tableModelPath = path.join(tournamenterRoot, './models/Table');
     var TableModel = require(tableModelPath)
@@ -73,12 +74,26 @@ module.exports = {
     TableModel.evaluateMethods.obr2024 = require('./sorters/obr2024');
 
     // Set 'obr2024' as default sorting algorithm
-    TableModel.attributes.evaluateMethod.defaultsTo = 'obr2024';
+    // TableModel.attributes.evaluateMethod.defaultsTo = 'obr2024';
     
     // Set columns count to 6 as default, with names
     TableModel.attributes.columns.defaultsTo = 6;
     TableModel.attributes.headerScore.defaultsTo = 
      'Round 1, Tempo 1, Round 2, Tempo 2, Round 3, Tempo 3';
+
+    // Set default to Portugese on columns
+    TableModel.attributes.headerTeam.defaultsTo = 'Equipe';
+    
+    //////////////  OBR ARTISTICA
+    TableModel.evaluateMethods.obr2024artistica = require('./sorters/obr2024artistica');
+
+    // Set 'obr2024artistica' as default sorting algorithm
+    TableModel.attributes.evaluateMethod.defaultsTo = 'obr2024artistica';
+    
+    // Set columns count to 6 as default, with names
+    TableModel.attributes.columns.defaultsTo = 3;
+    TableModel.attributes.headerScore.defaultsTo = 
+     'Entrevista Tecnica, Apresentação 1, Apresentação 2';
 
     // Set default to Portugese on columns
     TableModel.attributes.headerTeam.defaultsTo = 'Equipe';
@@ -89,6 +104,8 @@ module.exports = {
     // Add views path to view engine
     var viewsFolder = path.join(__dirname, '/public/tournamenter-obr')
     var views = app.server.get('views').push(viewsFolder)
+
+    
 
     // Add route to change configs/get
     app.server.all('/obr-sync',       auth, SyncModule.updateConfig)
@@ -113,6 +130,9 @@ module.exports = {
     app.server.get('/',     auth, function (req, res) {
       return res.render('obr-home', { path: req.route.path, newestVersion: hasUpdate});
     })
+
+    var artisticViewsFolder = path.join(__dirname, '/public/tournamenter-obr-artistica')
+    var views = app.server.get('views').push(artisticViewsFolder)
 
     // Init SyncModule
     SyncModule.init(app)

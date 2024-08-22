@@ -61,7 +61,8 @@ var TOURNAMENTER_URL = '';
 	    var data = {
 	            value: 0,
 	            laps: [],
-	            state: 'STOPPED'
+	            state: 'STOPPED',
+				valueMinutes: "0:00"
 	        },
 	        stopwatch = null;
 
@@ -70,6 +71,9 @@ var TOURNAMENTER_URL = '';
 	    	if(stopwatch) $timeout.cancel(stopwatch);
 	        stopwatch = $timeout(function() {
 	            data.value++;
+				var h = Math.floor(data.value / 600)
+				var m = Math.floor(data.value/10) % 60
+				data.valueMinutes = h + ':' + (m < 10 ? '0'+m : m) + "." + (data.value%10)
 	            start();
 	        }, SW_DELAI);
 	    };
@@ -84,6 +88,7 @@ var TOURNAMENTER_URL = '';
 	        stop()
 	        data.value = 0;
 	        data.laps = [];
+			data.valueMinutes = "0:00"
 	    };
 
 	    var lap = function () {
