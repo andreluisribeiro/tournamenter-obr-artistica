@@ -1,6 +1,7 @@
 <!-- v1.01 -->
-<div class="container" ng-show="false && timer.data.value == 0 && scorings.total == 0 ">
+<div class="container" ng-show="timer.data.value == 0 && scorings.total == 0 ">
   <div class="jumbotron">
+    
       <h1>Aguardando...</h1>
       <p>Para começar a pontuar, inicie o cronômetro</p>
       <p>Versão: Artística Regional 2024.1</p>
@@ -8,44 +9,89 @@
   </div>
 </div>
 
-<div class="container" ng-hide="false && timer.data.value == 0 && scorings.total == 0 ">
+<div class="container" ng-hide="timer.data.value == 0 && scorings.total == 0 ">
   <!-- SALAS -->
   <div class="row">
 
     <div class="col-md-12 col-sm-12" ng-init="k = 'first'">
-
-      <h3>Entrevista técnica</h3>
-      <h4>Programação</h4>
-      <div class="input-group input-group-lg">
-        <input ng-model="scoreData.programming" class="form-control"/>
-          <span class="input-group-addon">{{scorings.programming || 0}} pts</span>
-          <span ng-show="scorings.programming != +scoreData.programming" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
+      <h2>Tipo de Apresentação:</h2>
+      <div class="btn-group btn-group-justified">
+        <label class="btn btn-default" ng-model="scoreData.scoringType" btn-radio="'interview'">Entrevista Técnica</label>
+        <label class="btn btn-default" ng-model="scoreData.scoringType" btn-radio="'presentation'">Apresentação</label>
+        
       </div>
-      <h4>Sistemas Eletromecânicos</h4>
-      <div class="input-group input-group-lg">
-        <input ng-model="scoreData.electromechanical" class="form-control"/>
-          <span class="input-group-addon">{{scorings.electromechanical || 0}} pts</span>
-          <span ng-show="scorings.electromechanical != +scoreData.electromechanical" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
+      <div ng-show="scoreData.scoringType == 'interview'">
+        <br>
+        <h2>Pontuando: Entrevista técnica</h2>
+        <h4>Programação</h4>
+        <div class="input-group input-group-lg">
+          <input ng-model="scoreData.programming" class="form-control"/>
+            <span class="input-group-addon">{{scorings.programming || 0}} pts</span>
+            <span ng-show="scorings.programming != +scoreData.programming" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
+        </div>
+        <h4>Sistemas Eletromecânicos</h4>
+        <div class="input-group input-group-lg">
+          <input ng-model="scoreData.electromechanical" class="form-control"/>
+            <span class="input-group-addon">{{scorings.electromechanical || 0}} pts</span>
+            <span ng-show="scorings.electromechanical != +scoreData.electromechanical" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
+        </div>
+        <h4>Sensores e sistemas de comunicação</h4>
+        <div class="input-group input-group-lg">
+          <input ng-model="scoreData.sensors" class="form-control"/>
+            <span class="input-group-addon">{{scorings.sensors || 0}} pts</span>
+            <span ng-show="scorings.sensors != +scoreData.sensors" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
+        </div>
+        <h4>Trabalho em equipe e colegalidade</h4>
+        <div class="input-group input-group-lg">
+          <input ng-model="scoreData.teamwork" class="form-control"/>
+            <span class="input-group-addon">{{scorings.teamwork || 0}} pts</span>
+            <span ng-show="scorings.teamwork != +scoreData.teamwork" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
+        </div>
+        <h4>Deduções</h4>
+        <div class="input-group input-group-lg">
+          <input ng-model="scoreData.penalties" class="form-control"/>
+            <span class="input-group-addon">{{scorings.penalties || 0}} pts</span>
+            <span ng-show="scorings.penalties != +scoreData.penalties" class="input-group-addon alert alert-danger">Escolha um numero entre -15 e 0</span>
+        </div>
       </div>
-      <h4>Sensores e sistemas de comunicação</h4>
-      <div class="input-group input-group-lg">
-        <input ng-model="scoreData.sensors" class="form-control"/>
-          <span class="input-group-addon">{{scorings.sensors || 0}} pts</span>
-          <span ng-show="scorings.sensors != +scoreData.sensors" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
+      <div ng-show="scoreData.scoringType == 'presentation'">
+        <br>
+        <h2>Pontuando: Apresentação</h2>
+        <h4>Impacto Visual e Qualidade de Toda a Apresentação</h4>
+        <div class="input-group input-group-lg">
+          <input ng-model="scoreData.impact" class="form-control"/>
+            <span class="input-group-addon">{{scorings.impact || 0}} pts</span>
+            <span ng-show="scorings.impact != +scoreData.impact" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
+        </div>
+        <h4>Interação Robótica e Integração do Sistema</h4>
+        <div class="input-group input-group-lg">
+          <input ng-model="scoreData.interaction" class="form-control"/>
+            <span class="input-group-addon">{{scorings.interaction || 0}} pts</span>
+            <span ng-show="scorings.interaction != +scoreData.interaction" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
+        </div>
+        <h3>Implementação efetiva das funcionalidades apresentadas pela equipe.</h3>
+        <div ng-repeat="k in [1, 2, 3, 4]">
+        <div class="input-group input-group-lg form-group">
+        <h4>Recurso {{k}}: </h4>
+            <div>
+              <label for="resource_desc_{{k}}">Descição</label>
+              <input ng-model="scoreData.resources[k].description" class="form-control" id="resource_desc_{{k}}"/>
+            </div>
+            <div>
+              <label for="resource_points_{{k}}">Pontuação</label>
+              <input ng-model="scoreData.resources[k].value" class="form-control" id="resource_points_{{k}}"/>
+            </div>
+            <span class="input-group-addon">{{scorings.resources[k] || 0}} pts</span>
+            <span ng-show="scorings.resources[k] != +scoreData.resources[k].value" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 6</span>
+            </div>
+        </div>
+        <h4>Deduções</h4>
+        <div class="input-group input-group-lg">
+          <input ng-model="scoreData.penalties" class="form-control"/>
+            <span class="input-group-addon">{{scorings.penalties || 0}} pts</span>
+            <span ng-show="scorings.penalties != +scoreData.penalties" class="input-group-addon alert alert-danger">Escolha um numero entre -15 e 0</span>
+        </div>
       </div>
-      <h4>Trabalho em equipe e colegalidade</h4>
-      <div class="input-group input-group-lg">
-        <input ng-model="scoreData.teamwork" class="form-control"/>
-          <span class="input-group-addon">{{scorings.teamwork || 0}} pts</span>
-          <span ng-show="scorings.teamwork != +scoreData.teamwork" class="input-group-addon alert alert-danger">Escolha um numero entre 0 e 10</span>
-      </div>
-      <h4>Deduções</h4>
-      <div class="input-group input-group-lg">
-        <input ng-model="scoreData.penalties" class="form-control"/>
-          <span class="input-group-addon">{{scorings.penalties || 0}} pts</span>
-          <span ng-show="scorings.penalties != +scoreData.penalties" class="input-group-addon alert alert-danger">Escolha um numero entre -15 e 0</span>
-      </div>
-      
     </div>
   </div>
 </div>

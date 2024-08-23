@@ -34,8 +34,13 @@ module.exports = {
       childs: [
         {
           path: '/tournamenter-obr',
-          name: 'Pontuador',
+          name: 'Pontuador - Resgate',
         },
+        {
+          path: '/tournamenter-obr-artistica',
+          name: 'Pontuador - Artistica',
+        },
+        
         {
           path: '/obr-config',
           name: 'Configurar (Importar/Exportar)',

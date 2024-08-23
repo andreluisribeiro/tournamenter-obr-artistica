@@ -3,21 +3,44 @@ var app = angular.module('app.scorers', [])
 .factory('ArtisticScorer2024Regional', function (){
   // TODO 
   var model = {
-    programming:0,
-    electromechanical:0,
-    sensors:0,
-    teamwork:0,
-    penalties:0,
+    scoringType: 'interview',
+    programming:"",
+    electromechanical:"",
+    sensors:"",
+    teamwork:"",
+    penalties:"",
+    impact: "",
+    interaction: "",
+    resources: {
+      "1": {"description":"", "value":""},
+      "2": {"description":"", "value":""},
+      "3": {"description":"", "value":""},
+      "4": {"description":"", "value":""},
+    }
   };
   const between = (val, min, max) => Math.max(min, Math.min(val, max));
   var scorings ={
-    
-    programming: (sub, val, scorings, model) => between(val, 0, 10),
-    electromechanical: (sub, val, scorings, model) => between(val, 0, 10),
-    sensors: (sub, val, scorings, model) => between(val, 0, 10),
-    teamwork: (sub, val, scorings, model) => between(val, 0, 10),
+    scoringType: (sub, val, scorings, model) => 0,
+    programming: (sub, val, scorings, model) => model.scoringType == 'interview'? between(val, 0, 10) : 0,
+    electromechanical: (sub, val, scorings, model) => model.scoringType == 'interview'? between(val, 0, 10): 0,
+    sensors: (sub, val, scorings, model) => model.scoringType == 'interview'? between(val, 0, 10): 0,
+    teamwork: (sub, val, scorings, model) => model.scoringType == 'interview'? between(val, 0, 10): 0,
     penalties: (sub, val, scorings, model) => between(val, -15, 0),
-    
+    impact: (sub, val, scorings, model) => model.scoringType == 'presentation'?  between(val, 0, 16) : 0,
+    interaction: (sub, val, scorings, model) => model.scoringType == 'presentation'?  between(val, 0, 16) : 0,
+    resources: (sub, val, scorings, model) => {
+      let obj = {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      }
+      Object.keys(val).forEach((key) => {
+        model.resources[key].value = model.resources[key].value.replace(",", ".")
+        obj[key] = between(val[key].value, 0, 6)
+      })
+      return model.scoringType == 'presentation'?  obj : 0
+    },
   }
 
   return {
@@ -38,7 +61,6 @@ var app = angular.module('app.scorers', [])
         
         var mission = group;
         if(typeof mission == "string") {     
-          
           mission = mission.replace(",", ".")
           model[k] = mission
         }
@@ -57,11 +79,16 @@ var app = angular.module('app.scorers', [])
         }
 
         scored[k] = points
-        scored.total += points || 0;
+        if(typeof points == "object")
+          scored.total += Object.values(points).reduce((prev, current) => prev + current)
+        else
+          scored.total += points || 0; 
+          
         
       }
-
-      console.log(scored)
+      scored.total = Math.round(scored.total*100)/100
+      if(scored.total < 0)
+        scored.total = 0
       return scored;
     }
   }

@@ -40,7 +40,8 @@
 				doNotSave: extra.doNotSave,
 				maxTime: 300,
 			};
-
+			
+			
 			$scope.tables = Table.all(
 				function (){},
 				function (){
@@ -94,7 +95,9 @@
 
 			$scope.scorer = Scorer;
 			$scope.timer = stopwatch;
-			$scope.timer2 = Object.assign({}, stopwatch);
+			$scope.timer2 = stopwatch;
+			// Object.assign($scope.timer2, $scope.timer)
+			console.log($scope.timer2)
 			$scope.team = null;
 
 			$scope.scorings = {};

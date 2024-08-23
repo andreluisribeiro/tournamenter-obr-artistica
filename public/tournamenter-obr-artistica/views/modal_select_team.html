@@ -17,6 +17,7 @@
 		<div class="list-group">
 			<div class="list-group-item"
 				ng-repeat="table in tables"
+				ng-show="table.evaluateMethod == 'obr2024artistica'"
 				ng-class="{active: selected.table.id == table.id}"
 				ng-click="selectTable(table);">
 				{{table.name}}
